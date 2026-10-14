@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+certificates.db
+generated/*.pdf
+bulk-certificate-generator/certificates.db
+bulk-certificate-generator/generated/*.pdf

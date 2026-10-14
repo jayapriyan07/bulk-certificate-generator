@@ -1,6 +1,10 @@
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from datetime import datetime
+from sqlalchemy.orm import relationship
 from .database import Base
+
+def get_utc_now():
+    return datetime.now(timezone.utc)
 
 class Job(Base):
     __tablename__ = "jobs"
@@ -11,7 +15,9 @@ class Job(Base):
     total = Column(Integer, default=0)
     successful = Column(Integer, default=0)
     failed = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=get_utc_now)
+
+    certificates = relationship("Certificate", back_populates="job", cascade="all, delete-orphan")
 
 class Certificate(Base):
     __tablename__ = "certificates"
@@ -22,3 +28,7 @@ class Certificate(Base):
     status = Column(String, nullable=False)
     file_path = Column(String, nullable=True)
     error = Column(String, nullable=True)
+    created_at = Column(DateTime, default=get_utc_now)
+
+    job = relationship("Job", back_populates="certificates")
+
